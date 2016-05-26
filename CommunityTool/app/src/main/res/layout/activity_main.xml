@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.whispon.communitytool.MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="食事"
+            android:id="@+id/food"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="時事系"
+            android:id="@+id/news"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="エンタメ"
+            android:id="@+id/entame"
+            android:onClick="onClick" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="トピックの選択に戻る"
+            android:id="@+id/backToTitle"
+            android:layout_marginTop="280dp"
+            android:onClick="onClick" />
+    </LinearLayout>
+</RelativeLayout>
