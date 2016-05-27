@@ -66,7 +66,7 @@ public class XmlParser {
         // 各ノードリストを取得
         NodeList nodeList = root.getElementsByTagName("item");
         //System.out.println("ノードリストの数は：" + nodeList.getLength());
-
+        //titleListを初期化する。
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element element = (Element)nodeList.item(i);
             //System.out.println(getChildren(element,"title"));
@@ -77,6 +77,50 @@ public class XmlParser {
         //System.out.println(titleList);
         urlConn.disconnect();
     }
+
+    public static void getSelectXml(String URL) throws MalformedInputException,
+            ProtocolException, IOException {
+        URL url = new URL(URL);
+        HttpURLConnection urlConn = (HttpURLConnection) url.openConnection();
+        urlConn.setRequestMethod("GET");
+        urlConn.setInstanceFollowRedirects(false);
+        urlConn.setRequestProperty("Accept-Language", "ja;q=0.7,en;q=0.3");
+
+        urlConn.connect();
+
+        Document doc = null;
+        try {
+            doc = getDocumet(urlConn.getInputStream());
+        } catch (SAXException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        } catch (ParserConfigurationException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        }
+
+        // ルートの要素名になっている子ノードを取得する
+        Element root = doc.getDocumentElement();
+        //System.out.println("ルート要素名：" + root.getTagName());
+
+        // 各ノードリストを取得
+        NodeList nodeList = root.getElementsByTagName("item");
+        //System.out.println("ノードリストの数は：" + nodeList.getLength());
+        //タイトルリストを初期化する
+        titleList.clear();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Element element = (Element)nodeList.item(i);
+            //System.out.println(getChildren(element,"title"));
+            //titleタグのなかをtitleListにaddする
+            titleList.add(getChildren(element,"title"));
+        }
+        //リストのすべてを表示する
+        //System.out.println(titleList);
+        urlConn.disconnect();
+    }
+
+
+
 
     public static ArrayList getList() throws MalformedInputException,
     ProtocolException, IOException {

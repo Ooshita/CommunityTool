@@ -1,6 +1,7 @@
 package com.whispon.communitytool;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -9,24 +10,37 @@ import android.widget.Button;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+
+import java.io.IOException;
 import java.util.*;
+
+import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
     Multimap<String,String> topicMap = ArrayListMultimap.create();
     ArrayList<String> entameList = new ArrayList<>();
     ArrayList<String> foodList = new ArrayList<>();
     ArrayList<String> newsList = new ArrayList<>();
+    ArrayList<String> rankingList = new ArrayList<>();
+    private Button topicButton0;
     private Button topicButton1;
     private Button topicButton2;
     private Button topicButton3;
+    private Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //縦画面固定する.
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        topicButton0 = (Button) findViewById(R.id.ranking);
         topicButton1 = (Button) findViewById(R.id.food);
         topicButton2 = (Button) findViewById(R.id.entame);
         topicButton3 = (Button) findViewById(R.id.news);
+
 
         setupTopic();
         makeTopics();
@@ -74,7 +88,38 @@ public class MainActivity extends AppCompatActivity {
         topicButton3.setText(newsList.get(2));
     }
     public void onClick(View v) {
-        if(v.getId() == R.id.entame) {
+        if(v.getId() == R.id.ranking){
+            handler = new Handler();
+            Thread thread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        XmlParser xmlParser = new XmlParser();
+                        xmlParser.getSelectXml("http://searchranking.yahoo.co.jp/rss/burst_ranking-rss.xml");
+                        rankingList = xmlParser.getList();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            thread.start();
+            try {
+                Thread.sleep(2000);
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+
+            System.out.println(rankingList);
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    topicButton0.setText(rankingList.get(0));
+                    topicButton1.setText(rankingList.get(1));
+                    topicButton2.setText(rankingList.get(2));
+                    topicButton3.setText(rankingList.get(3));
+                }
+            });
+        } else if(v.getId() == R.id.entame) {
             entame();
         }else if(v.getId() == R.id.food) {
             food();

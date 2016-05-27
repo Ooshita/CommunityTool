@@ -1,13 +1,11 @@
 package com.whispon.communitytool;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
-
-import com.atilika.kuromoji.ipadic.Token;
-import com.atilika.kuromoji.ipadic.Tokenizer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,18 +15,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadFactory;
 import android.os.Handler;
 
+import com.atilika.kuromoji.ipadic.Token;
+import com.atilika.kuromoji.ipadic.Tokenizer;
 /**
  * Created by noriaki_oshita on 16/05/25.
  */
 public class RssActivity extends AppCompatActivity {
-    static String joshi = null;
+    static String excludeWord = null;
     ArrayList<String> titleList;
     private Handler handler;
     TextView text;
@@ -38,6 +41,9 @@ public class RssActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rss_activity);
+        //縦画面固定する
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         handler = new Handler();
 
@@ -55,6 +61,7 @@ public class RssActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
         };
         thread.start();
         /*final ArrayList<String> kiji = new ArrayList<String>();
@@ -73,6 +80,7 @@ public class RssActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     //形態素解析を行う
@@ -85,13 +93,13 @@ public class RssActivity extends AppCompatActivity {
             //形態素解析器によって分割された単語を入手
             meishiList.add(token.getSurface());
         }
-        joshi = getFile(getApplicationContext());
+        excludeWord = getFile(getApplicationContext());
 
         //カンマごとに分割して配列に代入
-        String[] joshiArr = joshi.split(",",0);
+        String[] joshiArr = excludeWord.split(",",0);
 
         for(int i=0;i<joshiArr.length;i++) {
-            //joshi.txtの中身を表示
+            //excludeWord.txtの中身を表示
             //System.out.println(joshiArr[i]);
             Iterator iterator = meishiList.iterator();
             while (iterator.hasNext()) {
@@ -107,17 +115,24 @@ public class RssActivity extends AppCompatActivity {
         return meishiList;
     }
 
+
     //助詞の定義をgetする。
     private static String getFile(Context context) {
         try {
-            InputStream file = context.getResources().openRawResource(R.raw.joshi);
+            InputStream file = context.getResources().openRawResource(R.raw.exclude_word);
             BufferedReader br = new BufferedReader(new InputStreamReader(file));
-            joshi = br.readLine();
+            excludeWord = br.readLine();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return joshi;
+        return excludeWord;
     }
+
+
 }
+
+
+
+
