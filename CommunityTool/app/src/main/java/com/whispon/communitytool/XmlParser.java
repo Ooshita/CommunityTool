@@ -122,7 +122,7 @@ public class XmlParser {
 
 
 
-    public static ArrayList getList() throws MalformedInputException,
+    public static ArrayList<String> getList() throws MalformedInputException,
     ProtocolException, IOException {
         return titleList;
     }

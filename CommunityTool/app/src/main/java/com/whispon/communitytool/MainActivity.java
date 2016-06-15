@@ -8,27 +8,33 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Multimap;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
-
-
 import java.io.IOException;
 import java.util.*;
 
 import android.os.Handler;
 
 public class MainActivity extends AppCompatActivity {
-    Multimap<String,String> topicMap = ArrayListMultimap.create();
-    ArrayList<String> entameList = new ArrayList<>();
-    ArrayList<String> foodList = new ArrayList<>();
-    ArrayList<String> newsList = new ArrayList<>();
     ArrayList<String> rankingList = new ArrayList<>();
-    private Button topicButton0;
+    ArrayList<String> sportNewsList = new ArrayList<>();
+    ArrayList<String> japanNewsList = new ArrayList<>();
+    ArrayList<String> entemeList = new ArrayList<>();
+    ArrayList<String> globalNewsList = new ArrayList<>();
+    ArrayList<String> computerNewsList = new ArrayList<>();
+    ArrayList<String> keizaiNewsList = new ArrayList<>();
+    ArrayList<String> yuruiNewsList = new ArrayList<>();
+
     private Button topicButton1;
     private Button topicButton2;
     private Button topicButton3;
+    private Button topicButton4;
+    private Button topicButton5;
+    private Button topicButton6;
+    private Button topicButton7;
+    private Button topicButton8;
+
     private Handler handler;
+
+    static XmlParser xmlParser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,102 +42,64 @@ public class MainActivity extends AppCompatActivity {
         //縦画面固定する.
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        topicButton0 = (Button) findViewById(R.id.ranking);
-        topicButton1 = (Button) findViewById(R.id.food);
-        topicButton2 = (Button) findViewById(R.id.entame);
-        topicButton3 = (Button) findViewById(R.id.news);
-
-
-        setupTopic();
-        makeTopics();
-
+        //本当はListViewにした方がいい。時間がないので今回は割愛
+        topicButton1 = (Button) findViewById(R.id.ranking);
+        topicButton2 = (Button) findViewById(R.id.sport);
+        topicButton3 = (Button) findViewById(R.id.japanese_news);
+        topicButton4 = (Button) findViewById(R.id.entame);
+        topicButton5 = (Button) findViewById(R.id.global_news);
+        topicButton6 = (Button) findViewById(R.id.computer);
+        topicButton7 = (Button) findViewById(R.id.keizai_news);
+        topicButton8 = (Button) findViewById(R.id.netlab);
 
 
     }
 
-    private void makeTopics() {
-        topicMap.put("食事","昨日は何食べたの？");
-        topicMap.put("食事","マックのメニューでは何が好き？");
-        topicMap.put("食事","最近料理にはまってるんだよね");
-        topicMap.put("エンタメ","最近の映画でおもしろいのある？");
-        topicMap.put("エンタメ","ゾンビ系の映画見ない？");
-        topicMap.put("エンタメ","芸能人で誰が好きなの？");
-        topicMap.put("時事","選挙に行った？");
-        topicMap.put("時事","もうすぐ増税だよね");
-        topicMap.put("時事","北海道新幹線乗った？");
-    }
-
-    private void setupTopic() {
-        topicButton1.setText("食事");
-        topicButton2.setText("エンタメ");
-        topicButton3.setText("時事");
-    }
-
-    private void food() {
-        foodList.addAll(topicMap.get("食事"));
-        topicButton1.setText(foodList.get(0));
-        topicButton2.setText(foodList.get(1));
-        topicButton3.setText(foodList.get(2));
-    }
-
-    private void entame() {
-        entameList.addAll(topicMap.get("エンタメ"));
-        topicButton1.setText(entameList.get(0));
-        topicButton2.setText(entameList.get(1));
-        topicButton3.setText(entameList.get(2));
-    }
-
-    private void news() {
-        newsList.addAll(topicMap.get("時事"));
-        topicButton1.setText(newsList.get(0));
-        topicButton2.setText(newsList.get(1));
-        topicButton3.setText(newsList.get(2));
-    }
     public void onClick(View v) {
         if(v.getId() == R.id.ranking){
-            handler = new Handler();
-            Thread thread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        XmlParser xmlParser = new XmlParser();
-                        xmlParser.getSelectXml("http://searchranking.yahoo.co.jp/rss/burst_ranking-rss.xml");
-                        rankingList = xmlParser.getList();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-            thread.start();
-            try {
-                Thread.sleep(2000);
-            }catch (InterruptedException e){
-                e.printStackTrace();
-            }
-
-            System.out.println(rankingList);
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    topicButton0.setText(rankingList.get(0));
-                    topicButton1.setText(rankingList.get(1));
-                    topicButton2.setText(rankingList.get(2));
-                    topicButton3.setText(rankingList.get(3));
-                }
-            });
-        } else if(v.getId() == R.id.entame) {
-            entame();
-        }else if(v.getId() == R.id.food) {
-            food();
-        }else if(v.getId() == R.id.news) {
-            //news();
-            Intent intent = new Intent(MainActivity.this, RssActivity.class);
+            Intent intent = new Intent(this, RankingActivity.class);
             startActivity(intent);
-            //news();
-        }else {
+        } else if(v.getId() == R.id.sport) {
+            Intent intent = new Intent(this, SportActivity.class);
+            startActivity(intent);
+        }else if(v.getId() == R.id.japanese_news) {
+            Intent intent = new Intent(this, JapanNewsActivity.class);
+            startActivity(intent);
+        } else if(v.getId() == R.id.entame) {
+            Intent intent = new Intent(this, EntameActivity.class);
+            startActivity(intent);
+        }else if(v.getId() == R.id.global_news) {
+            Intent intent = new Intent(this, GlobalNewsActivity.class);
+            startActivity(intent);
+        }else if(v.getId() == R.id.computer) {
+            Intent intent = new Intent(this, ComputerActivity.class);
+            startActivity(intent);
+        }else if(v.getId() == R.id.keizai_news) {
+            Intent intent = new Intent(this, KeizaiActivity.class);
+            startActivity(intent);
+
+        }else if(v.getId() == R.id.netlab) {
+            Intent intent = new Intent(this,NetlabActivity.class);
+            startActivity(intent);
+        }
+        else if(v.getId() == R.id.backToTitle) {
             setupTopic();
         }
 
+    }
+
+    private void setupTopic() {
+        handler = new Handler();
+        handler.post(() -> {
+            topicButton1.setText("ランキング");
+            topicButton2.setText("スポーツ");
+            topicButton3.setText("国内ニュース");
+            topicButton4.setText("エンターテインメント");
+            topicButton5.setText("海外ニュース");
+            topicButton6.setText("コンピュータ");
+            topicButton7.setText("経済");
+            topicButton8.setText("ゆるねた");
+        });
     }
 
     @Override

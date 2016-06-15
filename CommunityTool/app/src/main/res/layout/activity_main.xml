@@ -13,36 +13,67 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ランキング"
+            android:text="上昇ワード"
             android:id="@+id/ranking"
             android:onClick="onClick"/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="食事"
-            android:id="@+id/food"
+            android:text="スポーツ"
+            android:id="@+id/sport"
             android:onClick="onClick" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="時事系"
-            android:id="@+id/news"
+            android:text="国内ニュース"
+            android:id="@+id/japanese_news"
             android:onClick="onClick" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="エンタメ"
+            android:text="エンターテインメント"
             android:id="@+id/entame"
             android:onClick="onClick" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="海外ニュース"
+            android:id="@+id/global_news"
+            android:onClick="onClick" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="コンピュータ"
+            android:id="@+id/computer"
+            android:onClick="onClick" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="経済"
+            android:id="@+id/keizai_news"
+            android:onClick="onClick"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ねとらぼ"
+            android:id="@+id/netlab"
+            android:onClick="onClick"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="トピックの選択に戻る"
             android:id="@+id/backToTitle"
-            android:layout_marginTop="280dp"
             android:onClick="onClick" />
     </LinearLayout>
 </RelativeLayout>

@@ -48,36 +48,19 @@ public class RssActivity extends AppCompatActivity {
         handler = new Handler();
 
         text = (TextView) findViewById(R.id.textView);
-        Thread thread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    XmlParser xml = new XmlParser();
-                    XmlParser.getXml();
-
-                    titleList = xml.getList();
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Thread thread = new Thread(() -> {
+            try {
+                XmlParser xml = new XmlParser();
+                XmlParser.getXml();
+                titleList = xml.getList();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        };
+        });
         thread.start();
-        /*final ArrayList<String> kiji = new ArrayList<String>();
-        ArrayList<String> kiji2 = new ArrayList<>();
-        ArrayList<String> kiji3 = new ArrayList<>();
-        kiji = morphemeAnalysis(0);
-        kiji2 = morphemeAnalysis(1);
-        kiji3 = morphemeAnalysis(2);
-        */
-        //System.out.println(meishiList);
 
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
+        handler.post(() -> {
                 text.setText("");
-            }
         });
 
 

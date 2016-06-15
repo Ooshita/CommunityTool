@@ -16,6 +16,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".RssActivity"/>
+        <activity android:name=".RankingActivity"/>
+        <activity android:name=".SportActivity"/>
+        <activity android:name=".NetlabActivity"/>
+        <activity android:name=".JapanNewsActivity"/>
+        <activity android:name=".KeizaiActivity"/>
+        <activity android:name=".EntameActivity"/>
+        <activity android:name=".ComputerActivity"/>
+        <activity android:name=".GlobalNewsActivity"/>
     </application>
 
 </manifest>
